@@ -8,7 +8,9 @@ import type {
 
 const delay = (ms = 600) => new Promise((r) => setTimeout(r, ms));
 
-const store: Customer[] = [
+const STORAGE_KEY = "customers_data";
+
+const defaultCustomers: Customer[] = [
   {
     id: "1",
     name: "Vanessa Aquino",
@@ -80,6 +82,21 @@ const store: Customer[] = [
   },
 ];
 
+function loadStore(): Customer[] {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : defaultCustomers;
+  } catch {
+    return defaultCustomers;
+  }
+}
+
+function saveStore(data: Customer[]) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+const store: Customer[] = loadStore();
+
 export async function listCustomers(
   filters?: CustomerFilters,
 ): Promise<Customer[]> {
@@ -119,6 +136,7 @@ export async function createCustomer(
     updatedAt: new Date().toISOString(),
   };
   store.push(customer);
+  saveStore(store);
   return customer;
 }
 
@@ -134,6 +152,7 @@ export async function updateCustomer(
     ...payload,
     updatedAt: new Date().toISOString(),
   };
+  saveStore(store);
   return store[index];
 }
 
@@ -142,6 +161,7 @@ export async function deleteCustomer(id: string): Promise<void> {
   const index = store.findIndex((c) => c.id === id);
   if (index === -1) throw new Error("Cliente não encontrado");
   store.splice(index, 1);
+  saveStore(store);
 }
 
 export async function searchZipCode(zipCode: string): Promise<AddressResponse> {
