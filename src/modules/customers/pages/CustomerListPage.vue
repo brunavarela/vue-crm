@@ -113,8 +113,8 @@
             />
             <Tag
               v-else
-              :value="statusLabel[data.status]"
-              :severity="statusSeverity[data.status]"
+              :value="statusLabel[data.status as CustomerStatus]"
+              :severity="statusSeverity[data.status as CustomerStatus]"
               rounded
             />
           </template>
@@ -182,7 +182,6 @@ import Button from "primevue/button";
 import Select from "primevue/select";
 import Tag from "primevue/tag";
 import Skeleton from "primevue/skeleton";
-import Tooltip from "primevue/tooltip";
 import AppInput from "@/shared/components/layout/AppInput.vue";
 import { useCustomerStore } from "../stores/customer.store";
 import type { Customer, CustomerStatus } from "../types/customer.types";

@@ -38,7 +38,7 @@ const emit = defineEmits<{
   (e: "update:search", value: string): void;
 }>();
 
-function handleSearch(value: string) {
-  emit("update:search", value);
+function handleSearch(value: string | undefined) {
+  emit("update:search", value ?? "");
 }
 </script>

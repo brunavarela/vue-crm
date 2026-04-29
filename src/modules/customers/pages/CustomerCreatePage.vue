@@ -41,14 +41,20 @@ import Button from "primevue/button";
 import CustomerForm from "../components/CustomerForm.vue";
 import { useCustomerStore } from "../stores/customer.store";
 import type { CreateCustomerPayload } from "../types/customer.types";
+import type {
+  CreateCustomerPayload,
+  UpdateCustomerPayload,
+} from "../types/customer.types";
 
 const router = useRouter();
 const toast = useToast();
 const store = useCustomerStore();
 
-async function handleSubmit(payload: CreateCustomerPayload) {
+async function handleSubmit(
+  payload: CreateCustomerPayload | UpdateCustomerPayload,
+) {
   try {
-    await store.createCustomer(payload);
+    await store.createCustomer(payload as CreateCustomerPayload);
     toast.add({
       severity: "success",
       summary: "Cliente cadastrado com sucesso",

@@ -69,7 +69,6 @@ import Button from "primevue/button";
 import AppInput from "@/shared/components/layout/AppInput.vue";
 
 const router = useRouter();
-const showPassword = ref(false);
 const loading = ref(false);
 const loginError = ref("");
 
