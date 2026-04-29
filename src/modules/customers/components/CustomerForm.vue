@@ -218,6 +218,7 @@ import {
   maskCnpj,
   maskPhone,
   maskZipCode,
+  unmask,
 } from "@/shared/utils/masks";
 import { searchZipCode } from "../services/customer.service";
 import type {
@@ -247,10 +248,40 @@ const schema = yup.object({
     .string()
     .oneOf(["individual", "company"])
     .required("Tipo obrigatório"),
-  document: yup.string().required("Documento obrigatório"),
+  document: yup
+    .string()
+    .required("Documento obrigatório")
+    .when("personType", {
+      is: "individual",
+      then: (s) =>
+        s.test(
+          "cpf",
+          "CPF inválido (11 dígitos)",
+          (v) => unmask(v ?? "").length === 11,
+        ),
+      otherwise: (s) =>
+        s.test(
+          "cnpj",
+          "CNPJ inválido (14 dígitos)",
+          (v) => unmask(v ?? "").length === 14,
+        ),
+    }),
   email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-  phone: yup.string().required("Telefone obrigatório"),
-  zipCode: yup.string().required("CEP obrigatório"),
+  phone: yup
+    .string()
+    .required("Telefone obrigatório")
+    .test("phone", "Telefone inválido (10 ou 11 dígitos)", (v) => {
+      const d = unmask(v ?? "").length;
+      return d === 10 || d === 11;
+    }),
+  zipCode: yup
+    .string()
+    .required("CEP obrigatório")
+    .test(
+      "zipCode",
+      "CEP inválido (8 dígitos)",
+      (v) => unmask(v ?? "").length === 8,
+    ),
   street: yup.string().required("Rua obrigatória"),
   number: yup.string().required("Número obrigatório"),
   district: yup.string().required("Bairro obrigatório"),
