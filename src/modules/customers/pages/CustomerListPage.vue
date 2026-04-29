@@ -58,37 +58,46 @@
         <Column field="name" header="Nome" sortable>
           <template #body="{ data }">
             <Skeleton v-if="store.loading" width="10rem" height="1rem" />
-            <span v-else class="font-medium text-gray-900">{{
-              data.name
-            }}</span>
+            <span
+              v-else
+              class="font-medium"
+              :style="{ color: 'var(--text-primary)' }"
+              >{{ data.name }}</span
+            >
           </template>
         </Column>
 
         <Column field="document" header="CPF/CNPJ" sortable>
           <template #body="{ data }">
             <Skeleton v-if="store.loading" width="8rem" height="1rem" />
-            <span v-else class="text-gray-600">{{ data.document }}</span>
+            <span v-else :style="{ color: 'var(--text-primary)' }">{{
+              data.document
+            }}</span>
           </template>
         </Column>
 
         <Column field="email" header="E-mail" sortable>
           <template #body="{ data }">
             <Skeleton v-if="store.loading" width="12rem" height="1rem" />
-            <span v-else class="text-gray-600">{{ data.email }}</span>
+            <span v-else :style="{ color: 'var(--text-primary)' }">{{
+              data.email
+            }}</span>
           </template>
         </Column>
 
         <Column field="phone" header="Telefone">
           <template #body="{ data }">
             <Skeleton v-if="store.loading" width="8rem" height="1rem" />
-            <span v-else class="text-gray-600">{{ data.phone }}</span>
+            <span v-else :style="{ color: 'var(--text-primary)' }">{{
+              data.phone
+            }}</span>
           </template>
         </Column>
 
         <Column field="city" header="Cidade">
           <template #body="{ data }">
             <Skeleton v-if="store.loading" width="7rem" height="1rem" />
-            <span v-else class="text-gray-600"
+            <span v-else :style="{ color: 'var(--text-primary)' }"
               >{{ data.city }} - {{ data.state }}</span
             >
           </template>
@@ -114,9 +123,12 @@
         <Column field="createdAt" header="Cadastro" sortable>
           <template #body="{ data }">
             <Skeleton v-if="store.loading" width="6rem" height="1rem" />
-            <span v-else class="text-gray-500 text-xs">{{
-              formatDate(data.createdAt)
-            }}</span>
+            <span
+              v-else
+              class="text-xs"
+              :style="{ color: 'var(--text-secondary)' }"
+              >{{ formatDate(data.createdAt) }}</span
+            >
           </template>
         </Column>
 

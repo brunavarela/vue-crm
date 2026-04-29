@@ -13,7 +13,9 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium mb-1" style="color: #2a2626"
+        <label
+          class="block text-sm font-medium mb-1"
+          :style="{ color: 'var(--text-primary)' }"
           >Tipo de pessoa <span class="text-red-500">*</span></label
         >
         <Select
@@ -72,7 +74,9 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium mb-1" style="color: #2a2626"
+        <label
+          class="block text-sm font-medium mb-1"
+          :style="{ color: 'var(--text-primary)' }"
           >Status <span class="text-red-500">*</span></label
         >
         <Select
@@ -92,17 +96,25 @@
 
     <div>
       <p
-        class="text-sm font-semibold mb-3 border-b pb-2"
-        style="color: #2a2626"
+        class="text-sm font-semibold mb-3 border-b pb-2 border-[#E5E7EB]"
+        :style="{ color: 'var(--text-primary)' }"
       >
         Endereço
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium mb-1" style="color: #2a2626"
+          <label
+            class="block text-sm font-medium mb-1"
+            :style="{ color: 'var(--text-primary)' }"
             >CEP <span class="text-red-500">*</span></label
           >
           <div class="flex gap-2">
+            <small
+              v-if="zipCodeNotFound"
+              class="text-red-500 text-xs mt-1 block"
+            >
+              CEP não encontrado
+            </small>
             <AppInput
               v-model="zipCode"
               placeholder="00000-000"
@@ -273,6 +285,9 @@ const [district] = defineField("district");
 const [city] = defineField("city");
 const [state] = defineField("state");
 const [status] = defineField("status");
+const zipCodeNotFound = ref(false);
+const zipCodeChanged = ref(!props.initial?.id);
+const zipCodeValidated = ref(false);
 
 if (props.initial) {
   setValues({
@@ -319,12 +334,16 @@ function onPhoneInput(e: Event) {
 
 function onZipCodeInput(e: Event) {
   zipCode.value = maskZipCode((e.target as HTMLInputElement).value);
+  zipCodeNotFound.value = false;
+  zipCodeValidated.value = false;
+  zipCodeChanged.value = true;
 }
 
 async function fetchAddress() {
   const digits = (zipCode.value ?? "").replace(/\D/g, "");
   if (digits.length !== 8) return;
   loadingZip.value = true;
+  zipCodeNotFound.value = false;
   try {
     const addr = await searchZipCode(digits);
     setValues({
@@ -333,8 +352,11 @@ async function fetchAddress() {
       city: addr.city,
       state: addr.state,
     });
+    zipCodeValidated.value = true;
     toast.add({ severity: "success", summary: "CEP encontrado", life: 3000 });
   } catch {
+    zipCodeNotFound.value = true;
+    zipCodeValidated.value = false;
     toast.add({ severity: "error", summary: "CEP não encontrado", life: 3000 });
   } finally {
     loadingZip.value = false;
@@ -342,6 +364,24 @@ async function fetchAddress() {
 }
 
 const handleSubmit = validate((values) => {
+  if (zipCodeNotFound.value) {
+    toast.add({
+      severity: "error",
+      summary: "Corrija o CEP antes de salvar",
+      life: 3000,
+    });
+    return;
+  }
+
+  if (zipCodeChanged.value && !zipCodeValidated.value) {
+    toast.add({
+      severity: "error",
+      summary: "Busque o CEP antes de salvar",
+      life: 3000,
+    });
+    return;
+  }
+
   emit("submit", values as CreateCustomerPayload);
 });
 </script>

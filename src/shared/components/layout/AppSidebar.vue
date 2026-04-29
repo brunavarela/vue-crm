@@ -1,82 +1,217 @@
 <template>
-  <div
-    v-if="open"
-    class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
-    @click="$emit('close')"
-  />
-
   <aside
     :class="[
-      'fixed top-16 left-0 bottom-0 z-50 flex flex-col border-r border-slate-800 bg-[#0f172a] transition-all duration-300',
-      open ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-      collapsed ? 'w-24' : 'w-72',
+      'hidden lg:flex flex-col transition-all duration-400 shrink-0 overflow-hidden min-w-0',
+      expanded ? 'w-64' : 'w-16',
     ]"
+    style="background-color: #03202e"
+    @mouseenter="expanded = true"
+    @mouseleave="expanded = false"
   >
     <div
-      class="h-16 min-h-16 px-4 border-b border-slate-800 flex items-center justify-between"
+      class="flex items-center gap-3 px-4 py-5 overflow-hidden"
+      style="border-bottom: 1px solid rgba(255, 255, 255, 0.08)"
     >
-      <div class="flex items-center gap-3 overflow-hidden">
-        <div
-          class="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center shrink-0"
+      <div
+        class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+        style="background-color: #00a5e7"
+      >
+        <i class="pi pi-building text-white text-sm" />
+      </div>
+      <span
+        :class="[
+          'font-semibold text-base whitespace-nowrap transition-all duration-300 text-white',
+          expanded ? 'opacity-100 w-auto' : 'opacity-0 w-0',
+        ]"
+      >
+        Painel Administrativo
+      </span>
+    </div>
+
+    <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
+      <router-link
+        to="/customers"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors"
+        style="color: rgba(255, 255, 255, 0.6)"
+        active-class="!text-white !bg-[#00A5E7]"
+      >
+        <i class="pi pi-users text-base shrink-0" />
+        <span
+          :class="[
+            'text-sm font-medium whitespace-nowrap transition-all duration-300',
+            expanded ? 'opacity-100 w-auto' : 'opacity-0 w-0',
+          ]"
         >
-          <i class="pi pi-users text-white text-sm" />
+          Clientes
+        </span>
+      </router-link>
+    </nav>
+
+    <div
+      class="px-2 py-4 space-y-1 overflow-hidden"
+      style="border-top: 1px solid rgba(255, 255, 255, 0.08)"
+    >
+      <div class="flex items-center gap-3 px-2 py-2">
+        <div
+          class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+          style="background-color: rgba(255, 255, 255, 0.1)"
+        >
+          <i class="pi pi-user text-white text-sm" />
         </div>
-
-        <div v-if="!collapsed" class="overflow-hidden">
-          <h1 class="text-white font-bold text-base truncate">CustomerHub</h1>
-
-          <p class="text-slate-400 text-xs truncate">Painel Administrativo</p>
+        <div
+          :class="[
+            'transition-all duration-300 overflow-hidden',
+            expanded ? 'opacity-100 w-auto' : 'opacity-0 w-0',
+          ]"
+        >
+          <p class="text-white text-sm font-medium whitespace-nowrap">Admin</p>
+          <p
+            class="text-xs whitespace-nowrap"
+            style="color: rgba(255, 255, 255, 0.4)"
+          >
+            admin@email.com
+          </p>
         </div>
       </div>
 
       <button
-        class="hidden lg:flex w-9 h-9 rounded-xl items-center justify-center text-slate-400 hover:bg-slate-800 hover:text-white transition shrink-0"
-        @click="toggleCollapse"
+        :class="[
+          'flex cursor-pointer items-center gap-3 px-3 py-2 w-full rounded-lg transition-colors',
+          expanded ? 'justify-start' : 'justify-center',
+        ]"
+        style="color: rgba(255, 255, 255, 0.4)"
+        @mouseenter="
+          (e) => ((e.currentTarget as HTMLElement).style.color = '#00A5E7')
+        "
+        @mouseleave="
+          (e) =>
+            ((e.currentTarget as HTMLElement).style.color =
+              'rgba(255,255,255,0.4)')
+        "
+        @click="toggleDark"
       >
-        <i :class="collapsed ? 'pi pi-angle-right' : 'pi pi-angle-left'" />
+        <i :class="isDark ? 'pi pi-sun' : 'pi pi-moon'" class="shrink-0" />
+        <span
+          :class="[
+            'text-sm whitespace-nowrap transition-all duration-300',
+            expanded ? 'opacity-100 w-auto' : 'opacity-0 w-0',
+          ]"
+        >
+          {{ isDark ? "Modo claro" : "Modo escuro" }}
+        </span>
+      </button>
+
+      <button
+        :class="[
+          'flex items-center gap-3 px-3 py-2 w-full rounded-lg transition-colors cursor-pointer',
+          expanded ? 'justify-start' : 'justify-center',
+        ]"
+        style="color: rgba(255, 255, 255, 0.4)"
+        @mouseenter="
+          (e) => ((e.currentTarget as HTMLElement).style.color = '#f87171')
+        "
+        @mouseleave="
+          (e) =>
+            ((e.currentTarget as HTMLElement).style.color =
+              'rgba(255,255,255,0.4)')
+        "
+        @click="logout"
+      >
+        <i class="pi pi-sign-out shrink-0" />
+        <span
+          :class="[
+            'text-sm whitespace-nowrap transition-all duration-300',
+            expanded ? 'opacity-100 w-auto' : 'opacity-0 w-0',
+          ]"
+        >
+          Sair
+        </span>
       </button>
     </div>
+  </aside>
 
-    <nav class="flex-1 overflow-y-auto p-4">
-      <p
-        v-if="!collapsed"
-        class="mb-4 px-3 text-[11px] uppercase tracking-[0.2em] text-slate-500"
+  <div
+    v-if="mobileOpen"
+    class="fixed inset-0 z-40 bg-black/50 lg:hidden"
+    @click="emit('close-mobile')"
+  />
+
+  <aside
+    :class="[
+      'fixed inset-y-0 left-0 z-50 flex flex-col transition-all duration-300 shrink-0 overflow-hidden min-w-0 lg:hidden',
+      mobileOpen ? 'w-64' : 'w-0',
+    ]"
+    style="background-color: #03202e"
+  >
+    <div
+      class="flex items-center gap-3 px-4 py-5"
+      style="border-bottom: 1px solid rgba(255, 255, 255, 0.08)"
+    >
+      <div
+        class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
+        style="background-color: #00a5e7"
       >
-        Gestão
-      </p>
+        <i class="pi pi-building text-white text-sm" />
+      </div>
+      <span class="text-white font-semibold text-base whitespace-nowrap"
+        >AdminPanel</span
+      >
+    </div>
 
+    <nav class="flex-1 px-2 py-4 space-y-1 overflow-y-auto overflow-x-hidden">
       <router-link
         to="/customers"
-        class="group flex items-center gap-3 rounded-2xl px-4 py-3 text-slate-300 transition-all duration-200 hover:bg-slate-800"
-        active-class="bg-indigo-600 text-white shadow-lg"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors"
+        style="color: rgba(255, 255, 255, 0.6)"
+        active-class="!text-white !bg-[#00A5E7]"
+        @click="emit('close-mobile')"
       >
-        <i class="pi pi-users shrink-0 text-base" />
-
-        <span v-if="!collapsed" class="text-sm font-medium"> Clientes </span>
+        <i class="pi pi-users text-base shrink-0" />
+        <span class="text-sm font-medium whitespace-nowrap">Clientes</span>
       </router-link>
     </nav>
 
-    <div class="border-t border-slate-800 p-4">
-      <div class="flex items-center gap-3">
+    <div
+      class="px-2 py-4 space-y-1"
+      style="border-top: 1px solid rgba(255, 255, 255, 0.08)"
+    >
+      <div class="flex items-center gap-3 px-2 py-2">
         <div
-          class="w-11 h-11 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0"
+          class="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+          style="background-color: rgba(255, 255, 255, 0.1)"
         >
           <i class="pi pi-user text-white text-sm" />
         </div>
-
-        <div v-if="!collapsed" class="flex-1 overflow-hidden">
-          <p class="truncate text-sm font-semibold text-white">Admin</p>
-
-          <p class="truncate text-xs text-slate-400">admin@email.com</p>
+        <div>
+          <p class="text-white text-sm font-medium whitespace-nowrap">Admin</p>
+          <p
+            class="text-xs whitespace-nowrap"
+            style="color: rgba(255, 255, 255, 0.4)"
+          >
+            admin@email.com
+          </p>
         </div>
-
-        <button
-          class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 transition hover:bg-red-500/20 hover:text-red-400 shrink-0"
-          @click="logout"
-        >
-          <i class="pi pi-sign-out" />
-        </button>
       </div>
+
+      <button
+        class="flex items-center gap-3 px-3 py-2 w-full rounded-lg transition-colors justify-start"
+        style="color: rgba(255, 255, 255, 0.4)"
+        @click="toggleDark"
+      >
+        <i :class="isDark ? 'pi pi-sun' : 'pi pi-moon'" class="shrink-0" />
+        <span class="text-sm whitespace-nowrap">{{
+          isDark ? "Modo claro" : "Modo escuro"
+        }}</span>
+      </button>
+
+      <button
+        class="flex items-center gap-3 px-3 py-2 w-full rounded-lg transition-colors justify-start"
+        style="color: rgba(255, 255, 255, 0.4)"
+        @click="logout"
+      >
+        <i class="pi pi-sign-out shrink-0" />
+        <span class="text-sm whitespace-nowrap">Sair</span>
+      </button>
     </div>
   </aside>
 </template>
@@ -85,28 +220,33 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-defineProps<{
-  open: boolean;
-}>();
+defineProps<{ mobileOpen: boolean }>();
 
 const emit = defineEmits<{
-  (e: "close"): void;
-  (e: "toggle-collapse", value: boolean): void;
+  "close-mobile": [];
 }>();
 
 const router = useRouter();
+const expanded = ref(false);
+const isDark = ref(localStorage.getItem("theme") === "dark");
 
-const collapsed = ref(false);
+if (isDark.value) {
+  document.documentElement.classList.add("dark");
+}
 
-function toggleCollapse() {
-  collapsed.value = !collapsed.value;
-
-  emit("toggle-collapse", collapsed.value);
+function toggleDark() {
+  isDark.value = !isDark.value;
+  if (isDark.value) {
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("theme", "dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+    localStorage.setItem("theme", "light");
+  }
 }
 
 function logout() {
   localStorage.removeItem("authenticated");
-
   router.push("/login");
 }
 </script>

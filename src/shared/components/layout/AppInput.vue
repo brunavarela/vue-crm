@@ -1,6 +1,10 @@
 <template>
   <div class="flex flex-col gap-1">
-    <label v-if="label" class="text-sm font-medium" style="color: #2a2626">
+    <label
+      v-if="label"
+      class="text-sm font-medium"
+      :style="{ color: 'var(--text-primary)' }"
+    >
       {{ label }} <span v-if="required" class="text-red-500">*</span>
     </label>
 
@@ -11,7 +15,7 @@
         :type="inputType"
         :placeholder="placeholder"
         :disabled="disabled"
-        class="w-full px-3 py-2 rounded-lg text-sm outline-none transition-all border"
+        class="w-full px-3 py-2.5 rounded-lg text-sm outline-none transition-all border"
         :class="[
           invalid
             ? 'border-red-500 focus:border-red-500 focus:ring-red-200'
@@ -20,7 +24,9 @@
           'focus:ring-2',
         ]"
         :style="
-          invalid ? 'color: #2A2626;' : 'border-color: #03202E; color: #2A2626;'
+          invalid
+            ? 'color: var(--text-primary); background-color: var(--bg-surface);'
+            : 'border-color: #E5E7EB; color: var(--text-primary); background-color: var(--bg-surface);'
         "
         @input="
           emit('update:modelValue', ($event.target as HTMLInputElement).value)

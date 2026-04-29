@@ -9,8 +9,12 @@
         @click="router.push('/customers')"
       />
       <div>
-        <h1 class="text-xl font-bold text-gray-900">Detalhes do cliente</h1>
-        <p class="text-sm text-gray-500 mt-0.5">Informações cadastradas</p>
+        <h1 class="text-xl font-bold" :style="{ color: 'var(--text-primary)' }">
+          Detalhes do cliente
+        </h1>
+        <p class="text-sm" :style="{ color: 'var(--text-secondary)' }">
+          Informações cadastradas
+        </p>
       </div>
     </div>
 
@@ -25,10 +29,13 @@
 
     <div
       v-else-if="!store.selectedCustomer"
-      class="text-center py-16 text-gray-400"
+      class="text-center py-16"
+      :style="{ color: 'var(--text-secondary)' }"
     >
       <i class="pi pi-exclamation-circle text-4xl mb-3 block" />
-      <p class="font-medium text-gray-600">Cliente não encontrado</p>
+      <p class="font-medium" :style="{ color: 'var(--text-primary)' }">
+        Cliente não encontrado
+      </p>
     </div>
 
     <template v-else>
@@ -42,10 +49,13 @@
                 <i class="pi pi-user text-indigo-600 text-2xl" />
               </div>
               <div>
-                <h2 class="text-lg font-bold text-gray-900">
+                <h2
+                  class="text-lg font-bold"
+                  :style="{ color: 'var(--text-primary)' }"
+                >
                   {{ store.selectedCustomer.name }}
                 </h2>
-                <p class="text-sm text-gray-500">
+                <p class="text-sm" :style="{ color: 'var(--text-secondary)' }">
                   {{ store.selectedCustomer.email }}
                 </p>
               </div>
@@ -71,11 +81,15 @@
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div v-for="field in personalFields" :key="field.label">
               <p
-                class="text-xs font-medium text-gray-400 uppercase tracking-wider"
+                class="text-xs font-medium uppercase tracking-wider"
+                :style="{ color: 'var(--text-secondary)' }"
               >
                 {{ field.label }}
               </p>
-              <p class="text-sm font-medium text-gray-800 mt-0.5">
+              <p
+                class="text-sm font-medium mt-0.5"
+                :style="{ color: 'var(--text-primary)' }"
+              >
                 {{ field.value }}
               </p>
             </div>
@@ -85,17 +99,26 @@
 
       <Card>
         <template #title>
-          <span class="text-base font-semibold text-gray-800">Endereço</span>
+          <span
+            class="text-base font-semibold"
+            :style="{ color: 'var(--text-primary)' }"
+          >
+            Endereço
+          </span>
         </template>
         <template #content>
           <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
             <div v-for="field in addressFields" :key="field.label">
               <p
-                class="text-xs font-medium text-gray-400 uppercase tracking-wider"
+                class="text-xs font-medium uppercase tracking-wider"
+                :style="{ color: 'var(--text-secondary)' }"
               >
                 {{ field.label }}
               </p>
-              <p class="text-sm font-medium text-gray-800 mt-0.5">
+              <p
+                class="text-sm font-medium mt-0.5"
+                :style="{ color: 'var(--text-primary)' }"
+              >
                 {{ field.value || "—" }}
               </p>
             </div>

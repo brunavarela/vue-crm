@@ -9,22 +9,33 @@
         @click="router.push('/customers')"
       />
       <div>
-        <h1 class="text-xl font-bold text-gray-900">Editar cliente</h1>
-        <p class="text-sm text-gray-500 mt-0.5">Atualize os dados do cliente</p>
+        <h1 class="text-xl font-bold" :style="{ color: 'var(--text-primary)' }">
+          Editar cliente
+        </h1>
+        <p class="text-sm mt-0.5" :style="{ color: 'var(--text-secondary)' }">
+          Atualize os dados do cliente
+        </p>
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+    <div
+      class="rounded-xl border shadow-sm p-6"
+      :style="{
+        backgroundColor: 'var(--bg-surface)',
+        borderColor: 'var(--border-color)',
+      }"
+    >
       <div v-if="store.loading" class="space-y-4">
         <Skeleton v-for="i in 6" :key="i" height="2.5rem" class="w-full" />
       </div>
 
       <div
         v-else-if="!store.selectedCustomer"
-        class="text-center py-12 text-gray-400"
+        class="text-center py-12"
+        :style="{ color: 'var(--text-secondary)' }"
       >
         <i class="pi pi-exclamation-circle text-4xl mb-3 block" />
-        <p class="font-medium text-gray-600">Cliente não encontrado</p>
+        <p class="font-medium">Cliente não encontrado</p>
       </div>
 
       <CustomerForm

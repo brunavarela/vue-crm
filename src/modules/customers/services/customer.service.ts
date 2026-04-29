@@ -11,10 +11,10 @@ const delay = (ms = 600) => new Promise((r) => setTimeout(r, ms));
 const store: Customer[] = [
   {
     id: "1",
-    name: "Ana Paula Mendes",
+    name: "Vanessa Aquino",
     personType: "individual",
     document: "123.456.789-00",
-    email: "ana@email.com",
+    email: "vanessa@email.com",
     phone: "(11) 91234-5678",
     zipCode: "01310-100",
     street: "Av. Paulista",
@@ -46,10 +46,10 @@ const store: Customer[] = [
   },
   {
     id: "3",
-    name: "Carlos Eduardo Lima",
+    name: "Luciano Alves",
     personType: "individual",
     document: "987.654.321-00",
-    email: "carlos@email.com",
+    email: "Luciano@email.com",
     phone: "(31) 98765-4321",
     zipCode: "30112-000",
     street: "Av. Afonso Pena",
@@ -63,10 +63,10 @@ const store: Customer[] = [
   },
   {
     id: "4",
-    name: "Fernanda Costa",
+    name: "Ana Paula",
     personType: "individual",
     document: "111.222.333-44",
-    email: "fernanda@email.com",
+    email: "ana@email.com",
     phone: "(41) 99887-6655",
     zipCode: "80010-010",
     street: "Rua XV de Novembro",

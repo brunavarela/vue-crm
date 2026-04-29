@@ -9,14 +9,22 @@
         @click="router.push('/customers')"
       />
       <div>
-        <h1 class="text-xl font-bold text-gray-900">Novo cliente</h1>
-        <p class="text-sm text-gray-500 mt-0.5">
+        <h1 class="text-xl font-bold" :style="{ color: 'var(--text-primary)' }">
+          Novo cliente
+        </h1>
+        <p class="text-sm mt-0.5" :style="{ color: 'var(--text-secondary)' }">
           Preencha os dados para cadastrar
         </p>
       </div>
     </div>
 
-    <div class="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+    <div
+      class="rounded-xl border shadow-sm p-6"
+      :style="{
+        backgroundColor: 'var(--bg-surface)',
+        borderColor: 'var(--border-color)',
+      }"
+    >
       <CustomerForm
         :saving="store.saving"
         @submit="handleSubmit"

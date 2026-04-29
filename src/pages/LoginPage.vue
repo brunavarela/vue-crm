@@ -11,7 +11,9 @@
         >
           <i class="pi pi-building text-white" />
         </div>
-        <span class="text-white text-xl font-semibold">AdminPanel</span>
+        <span class="text-white text-xl font-semibold"
+          >Painel do Administrador</span
+        >
       </div>
 
       <div class="bg-white rounded-2xl p-8">
