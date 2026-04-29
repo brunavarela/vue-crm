@@ -40,7 +40,6 @@ import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import CustomerForm from "../components/CustomerForm.vue";
 import { useCustomerStore } from "../stores/customer.store";
-import type { CreateCustomerPayload } from "../types/customer.types";
 import type {
   CreateCustomerPayload,
   UpdateCustomerPayload,
