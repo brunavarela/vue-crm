@@ -1,5 +1,44 @@
-# Vue 3 + TypeScript + Vite
+# Customer Admin
 
-This template should help get you started developing with Vue 3 and TypeScript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Aplicação administrativa de gestão de clientes desenvolvida como desafio técnico nível pleno.
 
-Learn more about the recommended Project Setup and IDE Support in the [Vue Docs TypeScript Guide](https://vuejs.org/guide/typescript/overview.html#project-setup).
+## Stack
+
+- Vue 3 + TypeScript + Composition API
+- PrimeVue (UI components)
+- TailwindCSS (layout e responsividade)
+- VeeValidate + Yup (validação de formulários)
+- Pinia (estado global)
+- Vue Router (navegação)
+
+## Instalação
+
+```bash
+npm install
+```
+
+## Rodando localmente
+
+```bash
+npm run dev
+```
+
+## Funcionalidades
+
+- Listagem de clientes com paginação, ordenação e busca global
+- Filtro por status (ativo, inativo, bloqueado)
+- Skeleton loading e empty state
+- Cadastro e edição de clientes com validação completa
+- Exclusão com confirmação via dialog
+- Busca de endereço por CEP (ViaCEP)
+- Máscaras para CPF, CNPJ, telefone e CEP
+- Toasts de feedback em todas as operações
+- Layout administrativo responsivo com sidebar
+
+## Melhorias futuras
+
+- Autenticação e controle de sessão
+- Paginação server-side
+- Exportação para CSV/Excel
+- Histórico de alterações por cliente
+- Testes unitários e E2E
