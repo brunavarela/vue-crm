@@ -2,23 +2,19 @@
   <form class="space-y-6" @submit.prevent="handleSubmit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div class="md:col-span-2">
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Nome completo *</label
-        >
-        <InputText
+        <AppInput
           v-model="name"
-          class="w-full"
-          :invalid="!!errors.name"
+          label="Nome completo"
           placeholder="Nome do cliente"
+          :invalid="!!errors.name"
+          :error-message="errors.name"
+          required
         />
-        <small v-if="errors.name" class="text-red-500 text-xs mt-1 block">{{
-          errors.name
-        }}</small>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Tipo de pessoa *</label
+        <label class="block text-sm font-medium mb-1" style="color: #2a2626"
+          >Tipo de pessoa <span class="text-red-500">*</span></label
         >
         <Select
           v-model="personType"
@@ -38,58 +34,46 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">
-          {{ personType === "company" ? "CNPJ" : "CPF" }} *
-        </label>
-        <InputText
+        <AppInput
           v-model="document"
-          class="w-full"
-          :invalid="!!errors.document"
+          :label="personType === 'company' ? 'CNPJ' : 'CPF'"
           :placeholder="
             personType === 'company' ? '00.000.000/0001-00' : '000.000.000-00'
           "
+          :invalid="!!errors.document"
+          :error-message="errors.document"
+          required
           @input="onDocumentInput"
         />
-        <small v-if="errors.document" class="text-red-500 text-xs mt-1 block">{{
-          errors.document
-        }}</small>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >E-mail *</label
-        >
-        <InputText
+        <AppInput
           v-model="email"
-          class="w-full"
-          :invalid="!!errors.email"
-          placeholder="email@exemplo.com"
+          label="E-mail"
           type="email"
+          placeholder="email@exemplo.com"
+          :invalid="!!errors.email"
+          :error-message="errors.email"
+          required
         />
-        <small v-if="errors.email" class="text-red-500 text-xs mt-1 block">{{
-          errors.email
-        }}</small>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Telefone *</label
-        >
-        <InputText
+        <AppInput
           v-model="phone"
-          class="w-full"
-          :invalid="!!errors.phone"
+          label="Telefone"
           placeholder="(00) 00000-0000"
+          :invalid="!!errors.phone"
+          :error-message="errors.phone"
+          required
           @input="onPhoneInput"
         />
-        <small v-if="errors.phone" class="text-red-500 text-xs mt-1 block">{{
-          errors.phone
-        }}</small>
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1"
-          >Status *</label
+        <label class="block text-sm font-medium mb-1" style="color: #2a2626"
+          >Status <span class="text-red-500">*</span></label
         >
         <Select
           v-model="status"
@@ -107,20 +91,24 @@
     </div>
 
     <div>
-      <p class="text-sm font-semibold text-gray-800 mb-3 border-b pb-2">
+      <p
+        class="text-sm font-semibold mb-3 border-b pb-2"
+        style="color: #2a2626"
+      >
         Endereço
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >CEP *</label
+          <label class="block text-sm font-medium mb-1" style="color: #2a2626"
+            >CEP <span class="text-red-500">*</span></label
           >
           <div class="flex gap-2">
-            <InputText
+            <AppInput
               v-model="zipCode"
-              class="w-full"
-              :invalid="!!errors.zipCode"
               placeholder="00000-000"
+              :invalid="!!errors.zipCode"
+              :error-message="errors.zipCode"
+              class="flex-1"
               @input="onZipCodeInput"
               @blur="fetchAddress"
             />
@@ -131,101 +119,61 @@
               @click="fetchAddress"
             />
           </div>
-          <small
-            v-if="errors.zipCode"
-            class="text-red-500 text-xs mt-1 block"
-            >{{ errors.zipCode }}</small
-          >
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Estado *</label
-          >
-          <InputText
-            v-model="state"
-            class="w-full"
-            :invalid="!!errors.state"
-            placeholder="SP"
-            maxlength="2"
-          />
-          <small v-if="errors.state" class="text-red-500 text-xs mt-1 block">{{
-            errors.state
-          }}</small>
-        </div>
+        <AppInput
+          v-model="state"
+          label="Estado"
+          placeholder="SP"
+          :invalid="!!errors.state"
+          :error-message="errors.state"
+          maxlength="2"
+          required
+        />
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Cidade *</label
-          >
-          <InputText
-            v-model="city"
-            class="w-full"
-            :invalid="!!errors.city"
-            placeholder="Cidade"
-          />
-          <small v-if="errors.city" class="text-red-500 text-xs mt-1 block">{{
-            errors.city
-          }}</small>
-        </div>
+        <AppInput
+          v-model="city"
+          label="Cidade"
+          placeholder="Cidade"
+          :invalid="!!errors.city"
+          :error-message="errors.city"
+          required
+        />
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Bairro *</label
-          >
-          <InputText
-            v-model="district"
-            class="w-full"
-            :invalid="!!errors.district"
-            placeholder="Bairro"
-          />
-          <small
-            v-if="errors.district"
-            class="text-red-500 text-xs mt-1 block"
-            >{{ errors.district }}</small
-          >
-        </div>
+        <AppInput
+          v-model="district"
+          label="Bairro"
+          placeholder="Bairro"
+          :invalid="!!errors.district"
+          :error-message="errors.district"
+          required
+        />
 
         <div class="md:col-span-2">
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Rua *</label
-          >
-          <InputText
+          <AppInput
             v-model="street"
-            class="w-full"
-            :invalid="!!errors.street"
+            label="Rua"
             placeholder="Rua / Av."
+            :invalid="!!errors.street"
+            :error-message="errors.street"
+            required
           />
-          <small v-if="errors.street" class="text-red-500 text-xs mt-1 block">{{
-            errors.street
-          }}</small>
         </div>
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Número *</label
-          >
-          <InputText
-            v-model="number"
-            class="w-full"
-            :invalid="!!errors.number"
-            placeholder="Nº"
-          />
-          <small v-if="errors.number" class="text-red-500 text-xs mt-1 block">{{
-            errors.number
-          }}</small>
-        </div>
+        <AppInput
+          v-model="number"
+          label="Número"
+          placeholder="Nº"
+          :invalid="!!errors.number"
+          :error-message="errors.number"
+          required
+        />
 
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Complemento</label
-          >
-          <InputText
-            v-model="complement"
-            class="w-full"
-            placeholder="Apto, sala, etc."
-          />
-        </div>
+        <AppInput
+          v-model="complement"
+          label="Complemento"
+          placeholder="Apto, sala, etc."
+        />
       </div>
     </div>
 
@@ -246,13 +194,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref } from "vue";
 import { useForm } from "vee-validate";
 import * as yup from "yup";
 import { useToast } from "primevue/usetoast";
-import InputText from "primevue/inputtext";
 import Select from "primevue/select";
 import Button from "primevue/button";
+import AppInput from "@/shared/components/layout/AppInput.vue";
 import {
   maskCpf,
   maskCnpj,
