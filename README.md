@@ -16,6 +16,10 @@ Aplicação administrativa de gestão de clientes desenvolvida como desafio téc
 - Pinia (estado global)
 - Vue Router (navegação)
 
+## Requisitos
+
+- NodeJS 20 ou superior
+
 ## Instalação
 
 ```bash
