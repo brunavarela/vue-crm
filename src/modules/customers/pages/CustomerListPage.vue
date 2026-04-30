@@ -2,7 +2,9 @@
   <div>
     <div class="flex items-center justify-between mb-6">
       <div>
-        <h1 class="text-xl font-bold text-gray-900">Clientes</h1>
+        <h1 class="text-xl font-bold" :style="{ color: 'var(--text-primary)' }">
+          Clientes
+        </h1>
         <p class="text-sm text-gray-500 mt-0.5">
           Gerencie os clientes cadastrados
         </p>
